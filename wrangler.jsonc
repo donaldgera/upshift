@@ -1,0 +1,17 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "upshift",
+	"account_id": "REPLACE_WITH_YOUR_ACCOUNT_ID",
+	"main": "dist/server/index.js",
+	"compatibility_date": "2026-10-01",
+	"workers_dev": true,
+	"preview_urls": false,
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "upshift-api",
+			"database_id": "REPLACE_WITH_YOUR_DATABASE_ID",
+			"migrations_dir": "drizzle"
+		}
+	]
+}

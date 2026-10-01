@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f7f8">
+  <meta name="description" content="Upshift turns Codeforces solves into your next practice queue. Compare handles, filter problems, and pick a challenge in your rating range.">
+  <title>Upshift · Codeforces practice</title>
+  <meta name="application-name" content="Upshift">
+  <meta property="og:title" content="Upshift · Codeforces practice">
+  <meta property="og:description" content="Your next problem, from the programmers you learn from.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <script src="/theme.js"></script>
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#practice">Skip to practice</a>
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="brand" aria-label="Upshift home"><img class="brand-mark" src="/favicon.svg" width="36" height="36" alt=""><span>Upshift</span><span class="brand-context">Codeforces practice</span></a>
+    <div class="header-actions">
+      <div class="refresh-meta"><span>Updated</span><time id="refresh-time">Not compared yet</time></div>
+      <button id="refresh" class="button secondary" type="button"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M5.5 7a7 7 0 0 1 11.6-1L20 9M4 15l2.9 3A7 7 0 0 0 18.5 17"/></svg>Refresh</button>
+    </div>
+  </div>
+</header>
+<main id="practice">
+  <div class="page-toolbar">
+    <h1>Practice queue</h1>
+    <div class="display-settings" role="group" aria-label="Display settings">
+      <label class="visibility-toggle" for="show-ratings"><input id="show-ratings" type="checkbox" checked><span>Show ratings</span></label>
+      <label class="visibility-toggle" for="show-tags"><input id="show-tags" type="checkbox"><span>Show tags</span></label>
+      <div class="theme-setting"><label class="sr-only" for="theme-select">Appearance</label><select id="theme-select" aria-describedby="theme-help"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></div>
+      <span id="theme-help" class="setting-error" role="status" hidden></span>
+    </div>
+  </div>
+  <div id="error" class="notice error" role="alert" hidden><strong id="error-title">Couldn’t refresh</strong><span id="error-message"></span><button id="retry" class="text-button" type="button">Try again</button></div>
+  <div id="progress-panel" class="progress-panel" aria-live="polite" hidden><div><strong id="progress-message">Preparing comparison…</strong><button id="cancel" class="text-button" type="button">Cancel</button></div><progress id="progress" max="100" value="0" aria-label="Comparison progress"></progress></div>
+  <div id="cache-note" class="cache-note" role="status" hidden></div>
+  <div class="app-layout">
+    <aside class="sidebar" aria-label="Practice setup">
+      <form id="selection-form" class="panel handles-panel" novalidate>
+        <div class="panel-heading"><svg class="section-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><h2>Compare handles</h2></div>
+        <fieldset id="selection-fields">
+          <div class="field"><label for="learner">Your handle</label><input id="learner" autocomplete="off" spellcheck="false" maxlength="64" placeholder="e.g. donaldgera"></div>
+          <div class="field"><div class="label-row"><label for="source-input">Learn from</label><span id="source-count" class="muted small">0 / 5</span></div><div id="source-chips" class="chips" aria-label="Source handles"></div><div class="add-handle"><input id="source-input" autocomplete="off" spellcheck="false" maxlength="64" placeholder="Add handle" aria-describedby="source-error"><button id="add-source" class="button secondary" type="button" aria-label="Add source handle">Add</button></div><p id="source-error" class="field-error" role="status" hidden></p></div>
+          <fieldset class="mode-options"><legend>Include solves from</legend><div class="mode-switch"><label><input type="radio" name="mode" value="any" checked><span>Any source</span></label><label><input type="radio" name="mode" value="all"><span>All sources</span></label></div></fieldset>
+          <button id="compare" class="button primary full" type="submit">Build queue</button>
+        </fieldset>
+      </form>
+      <section class="panel random-panel" aria-labelledby="random-title">
+        <div class="panel-heading"><svg class="section-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m18 14 4 4-4 4M18 2l4 4-4 4M2 18h2.5a6 6 0 0 0 5-2.7l5-6.6a6 6 0 0 1 5-2.7H22M2 6h2.5a6 6 0 0 1 5 2.7l5 6.6a6 6 0 0 0 5 2.7H22"/></svg><h2 id="random-title">Random problem</h2></div>
+        <div class="random-range"><div><label for="random-min">Min rating</label><input id="random-min" type="number" min="0" step="1" value="0" inputmode="numeric" aria-describedby="random-count"></div><div><label for="random-max">Max rating</label><input id="random-max" type="number" min="0" step="1" value="1600" inputmode="numeric" aria-describedby="random-count"></div></div>
+        <button id="pick" class="button secondary full" type="button" disabled>Pick a problem</button><p id="random-count" class="small muted" role="status" aria-live="polite">Build a queue to start.</p><div id="recommendation" aria-live="polite"></div>
+      </section>
+      <details id="how-it-works" class="how-it-works"><summary>How it works</summary><div>
+        <p><strong>Any source</strong> combines their solves. <strong>All sources</strong> keeps problems every source solved. Your accepted problems move to <strong>Already solved</strong>.</p>
+        <p>Default order: the source’s earliest accepted submission first. All dates use your local time. Accepted solutions are linked under each problem.</p>
+        <p>Random picks use the entire unsolved queue and include both rating limits. Unrated problems are excluded whenever a rating limit is set.</p>
+        <p>Hiding ratings or tags keeps filters active. Settings and results stay in this browser.</p>
+        <p><strong>Refresh</strong> fetches new histories. Build queue may reuse data up to 15 minutes old; open queues refresh after 24 hours. Private submissions are unavailable.</p>
+      </div></details>
+    </aside>
+    <div class="results-column">
+      <section id="welcome" class="welcome panel"><img src="/favicon.svg" width="52" height="52" alt=""><h2>A good next problem starts here.</h2><p>Choose your handle and the programmers you learn from, then build your queue.</p></section>
+      <div id="results" hidden>
+        <div class="results-heading"><h2 id="results-title">Your queue</h2><span id="selection-badge" class="mode-badge"></span></div>
+        <p id="selection-changed" class="notice info" hidden>Selection changed. Build a queue to update these results.</p>
+        <section class="stats" aria-label="Comparison statistics"><div class="stat featured"><strong id="stat-queue">0</strong><span>To solve</span></div><div class="stat"><strong id="stat-completed">0</strong><span>Already solved</span></div><div class="stat"><strong id="stat-sources">0</strong><span>Source problems</span></div><div class="stat"><strong id="stat-learner">0</strong><span>Your total solves</span></div></section>
+        <div id="source-stats" class="source-stats" aria-label="Source comparison statistics"></div>
+        <section class="panel problem-panel" aria-label="Problem lists">
+          <div class="tabs" role="tablist" aria-label="Problem list"><button id="queue-tab" role="tab" aria-selected="true" aria-controls="problem-list" type="button" data-tab="queue">To solve <span id="queue-tab-count">0</span></button><button id="completed-tab" role="tab" aria-selected="false" aria-controls="problem-list" type="button" data-tab="completed">Already solved <span id="completed-tab-count">0</span></button></div>
+          <div class="filters">
+            <div class="search-field"><label for="search">Search</label><input id="search" type="search" placeholder="Problem ID or title" aria-label="Search by problem ID or title"></div>
+            <div class="filter-pair"><div><label for="min-rating">Min rating</label><input id="min-rating" type="number" min="0" max="10000" step="100" placeholder="Any" inputmode="numeric"></div><div><label for="max-rating">Max rating</label><input id="max-rating" type="number" min="0" max="10000" step="100" placeholder="Any" inputmode="numeric"></div></div>
+            <div><label for="tag">Topic</label><select id="tag"><option value="">All topics</option></select></div>
+            <div><label for="sort">Sort by</label><select id="sort"><option value="oldest">Oldest source solve</option><option value="newest">Newest source solve</option><option value="rating-asc">Rating: low to high</option><option value="rating-desc">Rating: high to low</option></select></div>
+          </div>
+          <div class="list-caption"><p id="filter-summary" role="status" aria-live="polite"></p><button id="clear-filters" class="text-button" type="button">Reset filters</button></div>
+          <div id="problem-list" role="tabpanel" aria-labelledby="queue-tab" tabindex="0"><div class="table-scroll"><table><thead><tr><th scope="col" class="number-cell">#</th><th scope="col">Problem</th><th scope="col" id="rating-heading">Rating</th><th scope="col" id="date-heading">First source solve</th></tr></thead><tbody id="problem-rows"></tbody></table></div><div id="empty" class="empty-state" hidden><strong id="empty-title"></strong><p id="empty-message"></p></div></div>
+          <div class="pagination"><span id="page-summary"></span><div><button id="previous" class="button secondary" type="button">Previous</button><button id="next" class="button secondary" type="button">Next</button></div></div>
+        </section>
+      </div>
+    </div>
+  </div>
+  <footer><span>Upshift</span><a href="https://codeforces.com/apiHelp" target="_blank" rel="noopener noreferrer">Codeforces API</a></footer>
+</main>
+<noscript><p class="notice error">Enable JavaScript to compare handles and build a queue.</p></noscript>
+</body>
+</html>

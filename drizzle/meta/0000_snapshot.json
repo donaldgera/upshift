@@ -1,0 +1,42 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "178f2e6f-3f37-4d98-8f6b-fce2a1bfa257",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "tables": {
+    "api_gate": {
+      "name": "api_gate",
+      "columns": {
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "next_at": {
+          "name": "next_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

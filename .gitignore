@@ -1,0 +1,11 @@
+.sites-runtime/
+.cache/
+*.tmp
+*.zip
+node_modules/
+.wrangler/
+.dev.vars*
+.env*
+.openai/
+dist/
+wrangler.local.jsonc
