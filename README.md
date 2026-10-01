@@ -1,6 +1,6 @@
 # Upshift
 
-Build a Codeforces practice queue from problems other people have solved and you haven't.
+Build a Codeforces practice problemset from problems other people have solved and you haven't.
 
 **[Open Upshift](https://upshift.upshift-practice.workers.dev/)**
 
